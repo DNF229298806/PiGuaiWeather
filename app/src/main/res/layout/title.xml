@@ -2,6 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
+
+    <Button
+        android:id="@+id/bt_nav"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/ic_home"/>
     <!--头布局  一个居中显示城市名   一个居右显示更新时间-->
     <TextView
         android:id="@+id/tv_title_city"
