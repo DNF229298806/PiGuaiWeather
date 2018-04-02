@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.example.piguaiweather.db.City;
 import com.example.piguaiweather.db.County;
 import com.example.piguaiweather.db.Province;
+import com.example.piguaiweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,8 +77,8 @@ public class Utility {
     /**
      * 解析和处理服务器返回的县级数据
      *
-     * @param response  服务器返回的json串
-     * @param cityId    城市id
+     * @param response 服务器返回的json串
+     * @param cityId   城市id
      * @return
      */
     public static boolean handleCountyResponse(String response, int cityId) {
@@ -99,4 +101,21 @@ public class Utility {
         return false;
     }
 
+    /**
+     *  将返回的json数据解析成Weather实体类
+     * @param response json
+     * @return Weather实体类
+     */
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            System.out.println(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
