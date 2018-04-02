@@ -1,5 +1,6 @@
 package com.example.piguaiweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.piguaiweather.gson.Forecast;
 import com.example.piguaiweather.gson.Weather;
+import com.example.piguaiweather.service.AutoUpdateService;
 import com.example.piguaiweather.util.HttpUtil;
 import com.example.piguaiweather.util.Utility;
 
@@ -84,7 +86,7 @@ public class WeatherActivity extends AppCompatActivity {
         });
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
-//        final String weatherId;
+        //        final String weatherId;
         String bingPic = prefs.getString("bing_pic", null);
         if (bingPic != null) {
             Glide.with(this).load(bingPic).into(iv_BingPicImg);
@@ -95,20 +97,20 @@ public class WeatherActivity extends AppCompatActivity {
             //有缓存的时候直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
             mWeatherId = weather.basic.weatherId;
-//            weatherId = weather.basic.weatherId;
+            //            weatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
             //无缓存的时候去服务器查询天气
-//            weatherId = getIntent().getStringExtra("weather_id");
+            //            weatherId = getIntent().getStringExtra("weather_id");
             mWeatherId = getIntent().getStringExtra("weather_id");
             sv_WeatherLayout.setVisibility(View.INVISIBLE);
-//            requestWeather(weatherId);
+            //            requestWeather(weatherId);
             requestWeather(mWeatherId);
         }
         sr_SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                requestWeather(weatherId);
+                //                requestWeather(weatherId);
                 requestWeather(mWeatherId);
             }
         });
@@ -186,7 +188,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     /**
-     * 处理并建始Weather实体类中的数据
+     * 处理并展示Weather实体类中的数据
      *
      * @param weather
      */
@@ -223,5 +225,7 @@ public class WeatherActivity extends AppCompatActivity {
         tv_Car_Wash.setText(carWash);
         tv_Sport.setText(sport);
         sv_WeatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
